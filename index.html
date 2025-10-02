@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legend of Gaming - Noticias y Lanzamientos</title>
+    <style>
+        :root {
+            --negro: #0a0a0a;
+            --rojo: #e50914;
+            --azul: #1a75ff;
+            --blanco: #ffffff;
+            --gris-oscuro: #1a1a1a;
+            --gris-medio: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--negro);
+            color: var(--blanco);
+            overflow-x: hidden;
+        }
+
+        /* Fondo dinámico */
+        #dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--negro) 0%, var(--gris-oscuro) 100%);
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--azul) 0%, transparent 70%);
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(0) translateX(20px);
+            }
+            75% {
+                transform: translateY(20px) translateX(10px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--rojo);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            color: var(--blanco);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--rojo);
+        }
+
+        .logo span {
+            color: var(--rojo);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--blanco);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--rojo);
+            color: var(--blanco);
+        }
+
+        .admin-controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #edit-mode-toggle {
+            background-color: var(--azul);
+            color: var(--blanco);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #edit-mode-toggle:hover {
+            background-color: #0052cc;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--azul);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #cccccc;
+        }
+
+        /* Plataformas */
+        .platforms {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--blanco);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--rojo);
+            margin: 10px auto;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .platform-card {
+            background-color: var(--gris-oscuro);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+            border-color: var(--rojo);
+        }
+
+        .platform-icon {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+        }
+
+        .platform-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .platform-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .platform-info p {
+            color: #cccccc;
+        }
+
+        /* Contenido */
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .content-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--gris-medio);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--rojo);
+            border-bottom: 3px solid var(--rojo);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .news-card {
+            background-color: var(--gris-oscuro);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-image {
+            height: 180px;
+            background-color: var(--gris-medio);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+        }
+
+        .news-content {
+            padding: 15px;
+        }
+
+        .news-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .news-content p {
+            color: #cccccc;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Discord Section */
+        .discord-section {
+            background-color: var(--gris-oscuro);
+            padding: 50px 0;
+            margin: 50px 0;
+            text-align: center;
+            border-top: 2px solid var(--rojo);
+            border-bottom: 2px solid var(--rojo);
+        }
+
+        .discord-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .discord-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--blanco);
+        }
+
+        .discord-content p {
+            color: #cccccc;
+            margin-bottom: 30px;
+        }
+
+        .discord-btn {
+            display: inline-block;
+            background-color: #5865F2;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .discord-btn:hover {
+            background-color: #4752c4;
+        }
+
+        /* Modo edición */
+        .edit-mode .editable {
+            position: relative;
+            border: 1px dashed var(--azul);
+            padding: 5px;
+            margin: 2px;
+        }
+
+        .edit-mode .editable:hover::after {
+            content: 'Haz doble clic para editar';
+            position: absolute;
+            top: -25px;
+            left: 0;
+            background-color: var(--azul);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            z-index: 10;
+        }
+
+        .edit-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--gris-oscuro);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .edit-controls button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            background-color: var(--azul);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-controls button:last-child {
+            margin-bottom: 0;
+            background-color: var(--rojo);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--gris-oscuro);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 2px solid var(--rojo);
+            margin-top: 50px;
+        }
+
+        .footer-content p {
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+
+        /* Modal para edición */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--gris-oscuro);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--blanco);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--blanco);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--blanco);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--gris-medio);
+            background-color: var(--negro);
+            color: var(--blanco);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--azul);
+            color: var(--blanco);
+        }
+
+        .btn-secondary {
+            background-color: var(--gris-medio);
+            color: var(--blanco);
+        }
+
+        .btn-danger {
+            background-color: var(--rojo);
+            color: var(--blanco);
+        }
+
+        /* Indicador de sincronización */
+        .sync-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: var(--azul);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 1001;
+            display: none;
+        }
+
+        .admin-badge {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: var(--rojo);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Indicador de sincronización -->
+    <div class="sync-indicator" id="sync-indicator">Sincronizando...</div>
+
+    <!-- Badge de administrador -->
+    <div class="admin-badge" id="admin-badge" style="display: none;">Modo Administrador</div>
+
+    <!-- Fondo dinámico -->
+    <div id="dynamic-bg"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Legend of <span>Gaming</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link" data-tab="news">Noticias</a></li>
+                        <li><a href="#" class="nav-link" data-tab="releases">Lanzamientos</a></li>
+                        <li><a href="#" class="nav-link" data-tab="reviews">Reseñas</a></li>
+                        <li><a href="#" class="nav-link" data-tab="community">Comunidad</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="admin-controls">
+                <button id="edit-mode-toggle">Activar Modo Edición</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2 class="editable" data-id="hero-title">Bienvenido a Legend of Gaming</h2>
+            <p class="editable" data-id="hero-subtitle">Tu fuente principal de noticias, lanzamientos y reseñas del mundo gaming. Mantente al día con todo lo relacionado con Nintendo, PlayStation, Xbox y PC.</p>
+        </div>
+    </section>
+
+    <!-- Plataformas -->
+    <section class="platforms">
+        <div class="container">
+            <h2 class="section-title">Explora por Plataforma</h2>
+            <div class="platform-grid">
+                <div class="platform-card" data-platform="nintendo">
+                    <div class="platform-icon">🎮</div>
+                    <div class="platform-info">
+                        <h3 class="editable" data-id="nintendo-title">Nintendo</h3>
+                        <p class="editable" data-id="nintendo-desc">Todo sobre Switch y los clásicos de Nintendo</p>
+                    </div>
+                </div>
+                <div class="platform-card" data-platform="playstation">
+                    <div class="platform-icon">🎮</div>
+                    <div class="platform-info">
+                        <h3 class="editable" data-id="playstation-title">PlayStation</h3>
+                        <p class="editable" data-id="playstation-desc">PS5, PS4 y la experiencia PlayStation</p>
+                    </div>
+                </div>
+                <div class="platform-card" data-platform="xbox">
+                    <div class="platform-icon">🎮</div>
+                    <div class="platform-info">
+                        <h3 class="editable" data-id="xbox-title">Xbox</h3>
+                        <p class="editable" data-id="xbox-desc">Xbox Series X|S, Game Pass y más</p>
+                    </div>
+                </div>
+                <div class="platform-card" data-platform="pc">
+                    <div class="platform-icon">🎮</div>
+                    <div class="platform-info">
+                        <h3 class="editable" data-id="pc-title">PC Gaming</h3>
+                        <p class="editable" data-id="pc-desc">Juegos, hardware y la escena PC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-tabs">
+                <div class="tab active" data-tab="news">Noticias</div>
+                <div class="tab" data-tab="releases">Lanzamientos</div>
+                <div class="tab" data-tab="reviews">Reseñas</div>
+                <div class="tab" data-tab="community">Comunidad</div>
+            </div>
+
+            <!-- Noticias -->
+            <div class="tab-content active" id="news-content">
+                <div class="news-grid" id="news-container">
+                    <!-- Las noticias se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Lanzamientos -->
+            <div class="tab-content" id="releases-content">
+                <div class="news-grid" id="releases-container">
+                    <!-- Los lanzamientos se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Reseñas -->
+            <div class="tab-content" id="reviews-content">
+                <div class="news-grid" id="reviews-container">
+                    <!-- Las reseñas se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Comunidad -->
+            <div class="tab-content" id="community-content">
+                <div class="news-grid" id="community-container">
+                    <!-- El contenido de comunidad se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Discord -->
+    <section class="discord-section">
+        <div class="container">
+            <div class="discord-content">
+                <h2>Únete a Nuestra Comunidad</h2>
+                <p>Conecta con otros gamers, comparte tus experiencias y mantente al tanto de los eventos especiales en nuestro servidor de Discord.</p>
+                <a href="https://discord.gg/PaZHPk6v" target="_blank" class="discord-btn">Unirse al Discord</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Controles de edición -->
+    <div class="edit-controls">
+        <button id="add-content">Añadir Contenido</button>
+        <button id="save-changes">Guardar Cambios</button>
+        <button id="exit-edit">Salir del Modo Edición</button>
+    </div>
+
+    <!-- Modal para edición/agregar contenido -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Añadir Nuevo Contenido</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="content-form">
+                <input type="hidden" id="content-id">
+                <div class="form-group">
+                    <label for="content-type">Tipo de Contenido</label>
+                    <select id="content-type">
+                        <option value="news">Noticia</option>
+                        <option value="releases">Lanzamiento</option>
+                        <option value="reviews">Reseña</option>
+                        <option value="community">Comunidad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="content-title">Título</label>
+                    <input type="text" id="content-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content-description">Descripción</label>
+                    <textarea id="content-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="content-platform">Plataforma</label>
+                    <select id="content-platform">
+                        <option value="all">Todas</option>
+                        <option value="nintendo">Nintendo</option>
+                        <option value="playstation">PlayStation</option>
+                        <option value="xbox">Xbox</option>
+                        <option value="pc">PC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="content-image">URL de la Imagen (opcional)</label>
+                    <input type="text" id="content-image">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-edit">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 Legend of Gaming. Todos los derechos reservados.</p>
+                <p>Mantente conectado con la comunidad gamer</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // SIMULACIÓN DE BASE DE DATOS EN LA NUBE
+        // En una implementación real, esto sería un servicio backend
+        class CloudDatabase {
+            constructor() {
+                this.storageKey = 'legendOfGaming_cloudData';
+                this.init();
+            }
+            
+            init() {
+                // Inicializar datos si no existen
+                if (!localStorage.getItem(this.storageKey)) {
+                    const initialData = {
+                        hero: {
+                            title: "Bienvenido a Legend of Gaming",
+                            subtitle: "Tu fuente principal de noticias, lanzamientos y reseñas del mundo gaming. Mantente al día con todo lo relacionado con Nintendo, PlayStation, Xbox y PC."
+                        },
+                        platforms: {
+                            nintendo: {
+                                title: "Nintendo",
+                                desc: "Todo sobre Switch y los clásicos de Nintendo"
+                            },
+                            playstation: {
+                                title: "PlayStation",
+                                desc: "PS5, PS4 y la experiencia PlayStation"
+                            },
+                            xbox: {
+                                title: "Xbox",
+                                desc: "Xbox Series X|S, Game Pass y más"
+                            },
+                            pc: {
+                                title: "PC Gaming",
+                                desc: "Juegos, hardware y la escena PC"
+                            }
+                        },
+                        content: {
+                            news: [
+                                {
+                                    id: 1,
+                                    title: "Nuevo trailer de The Legend of Zelda: Tears of the Kingdom",
+                                    description: "Nintendo ha lanzado un nuevo tráiler que muestra nuevas habilidades y zonas para explorar en el próximo juego de Zelda.",
+                                    platform: "nintendo",
+                                    date: "2023-04-10",
+                                    image: ""
+                                },
+                                {
+                                    id: 2,
+                                    title: "PlayStation anuncia nuevo modelo de PS5",
+                                    description: "Sony ha revelado un nuevo modelo de PS5 con diseño renovado y mayor capacidad de almacenamiento.",
+                                    platform: "playstation",
+                                    date: "2023-04-08",
+                                    image: ""
+                                }
+                            ],
+                            releases: [
+                                {
+                                    id: 1,
+                                    title: "Starfield - Fecha de lanzamiento confirmada",
+                                    description: "Bethesda ha confirmado que Starfield llegará el 6 de septiembre de 2023 para Xbox Series X/S y PC.",
+                                    platform: "xbox",
+                                    date: "2023-09-06",
+                                    image: ""
+                                }
+                            ],
+                            reviews: [
+                                {
+                                    id: 1,
+                                    title: "Reseña: Resident Evil 4 Remake",
+                                    description: "Capcom logra reinventar un clásico manteniendo su esencia pero con mecánicas modernas y gráficos impresionantes.",
+                                    platform: "all",
+                                    date: "2023-03-24",
+                                    image: ""
+                                }
+                            ],
+                            community: [
+                                {
+                                    id: 1,
+                                    title: "Evento de la comunidad: Torneo de Street Fighter 6",
+                                    description: "Participa en nuestro torneo mensual de Street Fighter 6 con premios exclusivos para los ganadores.",
+                                    platform: "all",
+                                    date: "2023-05-15",
+                                    image: ""
+                                }
+                            ]
+                        },
+                        lastUpdate: Date.now()
+                    };
+                    this.saveData(initialData);
+                }
+            }
+            
+            getData() {
+                const data = localStorage.getItem(this.storageKey);
+                return data ? JSON.parse(data) : null;
+            }
+            
+            saveData(data) {
+                data.lastUpdate = Date.now();
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+                
+                // Disparar evento personalizado para notificar a otras pestañas/ventanas
+                window.dispatchEvent(new CustomEvent('databaseUpdated', {
+                    detail: { timestamp: data.lastUpdate }
+                }));
+                
+                return data.lastUpdate;
+            }
+            
+            // Escuchar cambios en otras pestañas/ventanas
+            onUpdate(callback) {
+                window.addEventListener('databaseUpdated', (event) => {
+                    callback(event.detail.timestamp);
+                });
+                
+                // También escuchar cambios de almacenamiento (para otras pestañas)
+                window.addEventListener('storage', (event) => {
+                    if (event.key === this.storageKey) {
+                        callback(JSON.parse(event.newValue).lastUpdate);
+                    }
+                });
+            }
+        }
+
+        // Estado de la aplicación
+        let appState = {
+            editMode: false,
+            currentTab: 'news',
+            editingContent: null,
+            isAdmin: false,
+            lastUpdate: null,
+            cloudDB: null
+        };
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            createDynamicBackground();
+            setupEventListeners();
+            loadContent();
+            
+            // Verificar actualizaciones cada 2 segundos
+            setInterval(checkForUpdates, 2000);
+        });
+
+        // Inicializar la aplicación
+        function initializeApp() {
+            // Inicializar base de datos en la nube (simulada)
+            appState.cloudDB = new CloudDatabase();
+            
+            // Verificar si es el administrador
+            const urlParams = new URLSearchParams(window.location.search);
+            appState.isAdmin = urlParams.has('admin');
+            
+            if (appState.isAdmin) {
+                document.getElementById('admin-badge').style.display = 'block';
+            }
+            
+            // Cargar datos desde la base de datos en la nube
+            const cloudData = appState.cloudDB.getData();
+            if (cloudData) {
+                appState.data = cloudData;
+                appState.lastUpdate = cloudData.lastUpdate;
+            }
+            
+            // Escuchar actualizaciones de la base de datos
+            appState.cloudDB.onUpdate((timestamp) => {
+                if (timestamp > appState.lastUpdate) {
+                    console.log('Actualización recibida desde la nube');
+                    const newData = appState.cloudDB.getData();
+                    appState.data = newData;
+                    appState.lastUpdate = timestamp;
+                    loadContent();
+                    
+                    // Mostrar notificación para usuarios normales
+                    if (!appState.isAdmin) {
+                        showNotification('¡Nuevo contenido disponible!');
+                    }
+                }
+            });
+        }
+
+        // Mostrar notificación
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--azul);
+                color: white;
+                padding: 15px;
+                border-radius: 5px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Añadir estilos de animación si no existen
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Crear fondo dinámico
+        function createDynamicBackground() {
+            const bg = document.getElementById('dynamic-bg');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 100 + 50;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Animación con retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                bg.appendChild(particle);
+            }
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Navegación por pestañas
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tab = this.getAttribute('data-tab');
+                    switchTab(tab);
+                });
+            });
+
+            // Pestañas de contenido
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+
+            // Tarjetas de plataforma
+            document.querySelectorAll('.platform-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const platform = this.getAttribute('data-platform');
+                    // En una implementación real, esto abriría una nueva página
+                    alert(`Redirigiendo a la página de ${platform}. En una implementación completa, esto abriría una nueva página con contenido específico.`);
+                });
+            });
+
+            // Modo edición
+            document.getElementById('edit-mode-toggle').addEventListener('click', toggleEditMode);
+            document.getElementById('exit-edit').addEventListener('click', toggleEditMode);
+            document.getElementById('save-changes').addEventListener('click', saveData);
+            document.getElementById('add-content').addEventListener('click', openAddContentModal);
+
+            // Modal de edición
+            document.getElementById('cancel-edit').addEventListener('click', closeModal);
+            document.querySelector('.close-modal').addEventListener('click', closeModal);
+            document.getElementById('content-form').addEventListener('submit', saveContent);
+
+            // Hacer elementos editables en modo edición
+            document.addEventListener('dblclick', function(e) {
+                if (appState.editMode && e.target.classList.contains('editable')) {
+                    const element = e.target;
+                    const currentText = element.textContent;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentText;
+                    input.style.width = '100%';
+                    input.style.background = 'transparent';
+                    input.style.color = 'white';
+                    input.style.border = '1px solid var(--azul)';
+                    input.style.padding = '5px';
+                    
+                    element.textContent = '';
+                    element.appendChild(input);
+                    input.focus();
+                    
+                    input.addEventListener('blur', function() {
+                        element.textContent = input.value;
+                        updateData(element.getAttribute('data-id'), input.value);
+                    });
+                    
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            element.textContent = input.value;
+                            updateData(element.getAttribute('data-id'), input.value);
+                        }
+                    });
+                }
+            });
+        }
+
+        // Cambiar pestaña
+        function switchTab(tabName) {
+            // Actualizar pestañas activas
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Actualizar contenido activo
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-content`).classList.add('active');
+            
+            // Actualizar navegación
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.nav-link[data-tab="${tabName}"]`).classList.add('active');
+            
+            appState.currentTab = tabName;
+        }
+
+        // Cargar contenido
+        function loadContent() {
+            // Cargar texto editable
+            for (const key in appState.data.hero) {
+                const element = document.querySelector(`[data-id="hero-${key}"]`);
+                if (element) {
+                    element.textContent = appState.data.hero[key];
+                }
+            }
+            
+            for (const platform in appState.data.platforms) {
+                for (const key in appState.data.platforms[platform]) {
+                    const element = document.querySelector(`[data-id="${platform}-${key}"]`);
+                    if (element) {
+                        element.textContent = appState.data.platforms[platform][key];
+                    }
+                }
+            }
+            
+            // Cargar contenido dinámico
+            loadContentByType('news');
+            loadContentByType('releases');
+            loadContentByType('reviews');
+            loadContentByType('community');
+        }
+
+        // Cargar contenido por tipo
+        function loadContentByType(type) {
+            const container = document.getElementById(`${type}-container`);
+            container.innerHTML = '';
+            
+            if (appState.data.content[type] && appState.data.content[type].length > 0) {
+                // Ordenar por fecha (más reciente primero)
+                const sortedContent = [...appState.data.content[type]].sort((a, b) => 
+                    new Date(b.date) - new Date(a.date)
+                );
+                
+                sortedContent.forEach(item => {
+                    const card = createContentCard(item, type);
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">No hay ${type} disponibles. ${appState.editMode ? 'Haz clic en "Añadir Contenido" para agregar algunos.' : ''}</p>`;
+            }
+        }
+
+        // Crear tarjeta de contenido
+        function createContentCard(item, type) {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            card.setAttribute('data-id', item.id);
+            
+            const imageUrl = item.image || '';
+            const platformClass = item.platform !== 'all' ? `platform-${item.platform}` : '';
+            
+            card.innerHTML = `
+                <div class="news-image ${platformClass}">
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;">` : 'Imagen no disponible'}
+                </div>
+                <div class="news-content">
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <div class="news-meta">
+                        <span>${formatDate(item.date)}</span>
+                        <span>${getPlatformName(item.platform)}</span>
+                    </div>
+                    ${appState.editMode ? `<button class="btn btn-danger edit-content-btn" style="margin-top: 10px; width: 100%;" data-id="${item.id}" data-type="${type}">Eliminar</button>` : ''}
+                </div>
+            `;
+            
+            // Agregar evento para eliminar en modo edición
+            if (appState.editMode) {
+                const deleteBtn = card.querySelector('.edit-content-btn');
+                deleteBtn.addEventListener('click', function() {
+                    deleteContent(item.id, type);
+                });
+            }
+            
+            return card;
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        }
+
+        // Obtener nombre de plataforma
+        function getPlatformName(platform) {
+            const platforms = {
+                'nintendo': 'Nintendo',
+                'playstation': 'PlayStation',
+                'xbox': 'Xbox',
+                'pc': 'PC',
+                'all': 'Todas'
+            };
+            return platforms[platform] || platform;
+        }
+
+        // Alternar modo edición
+        function toggleEditMode() {
+            // Solo permitir edición si es administrador
+            if (!appState.isAdmin) {
+                alert('Solo el administrador puede activar el modo edición. Accede con ?admin en la URL.');
+                return;
+            }
+            
+            appState.editMode = !appState.editMode;
+            document.body.classList.toggle('edit-mode', appState.editMode);
+            document.querySelector('.edit-controls').style.display = appState.editMode ? 'block' : 'none';
+            document.getElementById('edit-mode-toggle').textContent = appState.editMode ? 'Desactivar Modo Edición' : 'Activar Modo Edición';
+            
+            // Recargar contenido para mostrar/ocultar controles de edición
+            loadContent();
+        }
+
+        // Actualizar datos
+        function updateData(id, value) {
+            const parts = id.split('-');
+            if (parts[0] === 'hero') {
+                appState.data.hero[parts[1]] = value;
+            } else {
+                appState.data.platforms[parts[0]][parts[1]] = value;
+            }
+        }
+
+        // Guardar datos
+        function saveData() {
+            // Mostrar indicador de sincronización
+            showSyncIndicator();
+            
+            // Guardar en la base de datos en la nube
+            appState.lastUpdate = appState.cloudDB.saveData(appState.data);
+            
+            // Ocultar indicador después de un tiempo
+            setTimeout(() => {
+                hideSyncIndicator();
+                alert('Cambios guardados correctamente. Todos los usuarios verán las actualizaciones en tiempo real.');
+            }, 1000);
+        }
+
+        // Mostrar indicador de sincronización
+        function showSyncIndicator() {
+            const indicator = document.getElementById('sync-indicator');
+            indicator.style.display = 'block';
+        }
+
+        // Ocultar indicador de sincronización
+        function hideSyncIndicator() {
+            const indicator = document.getElementById('sync-indicator');
+            indicator.style.display = 'none';
+        }
+
+        // Verificar actualizaciones
+        function checkForUpdates() {
+            const cloudData = appState.cloudDB.getData();
+            if (cloudData && cloudData.lastUpdate > appState.lastUpdate) {
+                console.log('Actualización detectada en la nube');
+                appState.data = cloudData;
+                appState.lastUpdate = cloudData.lastUpdate;
+                loadContent();
+                
+                // Mostrar notificación para usuarios normales
+                if (!appState.isAdmin) {
+                    showNotification('¡Se han actualizado los contenidos!');
+                }
+            }
+        }
+
+        // Abrir modal para añadir contenido
+        function openAddContentModal() {
+            document.getElementById('modal-title').textContent = 'Añadir Nuevo Contenido';
+            document.getElementById('content-form').reset();
+            document.getElementById('content-id').value = '';
+            appState.editingContent = null;
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        // Guardar contenido
+        function saveContent(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('content-id').value;
+            const type = document.getElementById('content-type').value;
+            const title = document.getElementById('content-title').value;
+            const description = document.getElementById('content-description').value;
+            const platform = document.getElementById('content-platform').value;
+            const image = document.getElementById('content-image').value;
+            
+            const contentItem = {
+                id: id || Date.now(),
+                title,
+                description,
+                platform,
+                date: new Date().toISOString().split('T')[0],
+                image
+            };
+            
+            if (id) {
+                // Editar contenido existente
+                const index = appState.data.content[type].findIndex(item => item.id == id);
+                if (index !== -1) {
+                    appState.data.content[type][index] = contentItem;
+                }
+            } else {
+                // Añadir nuevo contenido
+                if (!appState.data.content[type]) {
+                    appState.data.content[type] = [];
+                }
+                appState.data.content[type].push(contentItem);
+            }
+            
+            saveData();
+            loadContentByType(type);
+            closeModal();
+            
+            // Cambiar a la pestaña correspondiente
+            switchTab(type);
+        }
+
+        // Eliminar contenido
+        function deleteContent(id, type) {
+            if (confirm('¿Estás seguro de que quieres eliminar este contenido?')) {
+                appState.data.content[type] = appState.data.content[type].filter(item => item.id !== id);
+                saveData();
+                loadContentByType(type);
+            }
+        }
+    </script>
+</body>
+</html>
